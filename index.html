@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Eventful Search App</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <style type="text/css">
+
+    </style>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+        crossorigin="anonymous"></script>
+
+    <script src="lib\jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="styles\style.css">
+
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            $("#StartDate").attr("value", Today(0));
+            $("#EndDate").attr("value", Today(1));
+        })
+        
+        function Today(day){
+            var date = new Date();
+
+            if(day != 0){
+                date.setDate(date.getDate() + 1); 
+            }
+
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+
+            if (month < 10) month = "0" + month;
+            if (day < 10) day = "0" + day;
+
+            var today = day + "/" + month + "/" + year; 
+
+            return today;
+        }
+
+
+        $(function () {
+            //$("#StartDate").val("15/08/2017")// .datepicker( "option", "defaultDate", +2 );
+
+            $("#StartDate").datepicker({
+                dateFormat: "dd/mm/yy",                 
+                showOn: "button"                            
+            });
+
+            $("#EndDate").datepicker({
+                dateFormat: "dd/mm/yy",                
+            });
+        });
+
+        //$("#searchForm").validate();
+
+        
+    </script>
+</head>
+
+<body>
+
+    <!-- Canada Post  -->
+    <link rel="stylesheet" type="text/css" href="http://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css?key=hd98-gn17-fk74-ky34" />
+    <script type="text/javascript" src="http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=hd98-gn17-fk74-ky34"></script>
+
+    <div class="panel panel-primary" style="margin: 20px 40px  20px 40px;">
+        <div class="panel-heading">
+            <h1 class="panel-title">Eventful Search App</h1>
+        </div>
+
+        <div class="panel-body">
+            <form>
+                <div class="row">
+                    <!-- Left -->
+                    <div class="col-md-6">
+                        <!-- Address -->
+                        <div class="form-group row">
+                            <div class="col-md-4"><label for="Address">Address</label></div>
+                            <div class="col-md-8">
+                                <textarea class="form-control input-sm" id="address" name="address" rows="6" ></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Radius -->
+                        <div class="form-group row">
+                            <div class="col-md-4"><label for="Radius">Radius</label></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm" id="radius" name="radius" placeholder="" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right -->
+                    <div class="form-group col-md-6">
+                        <!-- Start Date -->
+                        <div class="form-group row">
+                            <div class="col-md-4 "><label for="StartDate">Start Date</label></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm datepicker" 
+                                    id="StartDate" name="StartDate" >
+                            </div>
+                        </div>
+
+                        <!-- End Date -->
+                        <div class="form-group row">
+                            <div class="col-md-4"><label for="EndDate">End Date</label></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm datepicker" id="EndDate" name="EndDate">
+                            </div>
+                        </div>
+
+                        <!-- Categories  -->
+                        <div class="form-group row">
+                            <div class="col-md-4"><label for="Categories">Categories</label></div>
+                            <div class="col-md-8">
+                                <select class="form-control input-sm" id="Categories" name="Categories">
+                                <option>Music</option>
+                                <option>Books</option>
+                                <option>Sports</option>
+                                <option>Arts</option>                                
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6"></div>
+                    <div class="form-group col-md-6">
+                        <input type="submit" class="btn btn-primary" value="Submit" style="float: right; width:150px" />
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div id="dialog">
+        <h1>Event lists</h1>
+    </div>
+
+    <script>
+        
+        $.validator.addMethod("startsWithA", function(value, element){
+            return /^A/.test(value);
+        }, 'Field Must Start With A');
+
+        $.validator.addMethod("CompareDate", function(value, element){
+            var stDate = new Date(dateFromddMMyyyy($('#StartDate').val()));
+            var endDate = new Date(dateFromddMMyyyy(value));
+            
+            return endDate > stDate;
+            
+        }, 'End Date can not be smallar than Start Date!!');
+
+         $.validator.addMethod("AddressValidation", function(value, element){
+            
+            // Validate against Web Api
+            return false;
+            
+        }, 'Invalid address');
+        
+        $('form').validate({
+			rules: {
+				address: { 
+                    required: true , 
+                    minlength:4,
+                    maxlength:250,                    
+                    //AddressValidation:true
+                },
+				radius: { 
+                    required: true,
+                    number: true,
+                    range:[0.1,200] 
+                },
+                StartDate: { 
+                    required: true,                                      
+                },
+                EndDate: { 
+                    required: true, 
+                    CompareDate:true
+                },
+                Categories: { required: true },
+            },
+            highlight: function(element, errorClass){
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function(element, errorClass){
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            submitHandler: function(form){
+                //alert('AJAX Called...');
+
+                $('#dialog').dialog({
+                    modal: true,
+                    title: "Event List",
+                    width: 1000,
+                    height: 700
+                });
+            }
+
+			// messages: {
+			// 	address: "Please enter Address",
+			// 	radius: "Please enter radius",				
+			// }
+        });
+        
+        // $('form').submit(function(event){
+        //     var x = $('form').serialize();
+        //     alert(x);
+
+        //     event.preventDefault();
+        // });
+
+        function dateFromddMMyyyy(date){
+           var parts = date.split("/");
+            return new Date(parts[2], parts[1] - 1, parts[0]); 
+        }
+
+    </script>
+</body>
+
+</html>
