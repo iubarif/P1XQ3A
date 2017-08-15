@@ -4,24 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
     <title>Eventful Search App</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-    <style type="text/css">
-
-    </style>
-
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-        crossorigin="anonymous"></script>
-
+    <!-- Scripts -->
+    <script src="lib\jquery-1.12.4.min.js"></script>
+    <script src="lib\jquery-ui-1.12.1.min.js"></script>
     <script src="lib\jquery.validate.min.js"></script>
-    <link rel="stylesheet" href="styles\style.css">
+    <script src="lib\bootstrap.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css\bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css\jquery-ui.css">
 
     <script type='text/javascript'>
         $(document).ready(function() {
@@ -50,11 +44,9 @@
 
 
         $(function () {
-            //$("#StartDate").val("15/08/2017")// .datepicker( "option", "defaultDate", +2 );
-
             $("#StartDate").datepicker({
                 dateFormat: "dd/mm/yy",                 
-                showOn: "button"                            
+                //showOn: "button"                            
             });
 
             $("#EndDate").datepicker({
@@ -70,13 +62,9 @@
 
 <body>
 
-    <!-- Canada Post  -->
-    <link rel="stylesheet" type="text/css" href="http://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css?key=hd98-gn17-fk74-ky34" />
-    <script type="text/javascript" src="http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=hd98-gn17-fk74-ky34"></script>
-
     <div class="panel panel-primary" style="margin: 20px 40px  20px 40px;">
         <div class="panel-heading">
-            <h1 class="panel-title">Eventful Search App (v 1.00)</h1>
+            <h1 class="panel-title">Eventful Search App (v 1.01)</h1>
         </div>
 
         <div class="panel-body">
