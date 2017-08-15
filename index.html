@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Eventful Search App</title>
 
     <!-- Scripts -->
@@ -12,51 +12,50 @@
     <script src="lib\jquery-ui-1.12.1.min.js"></script>
     <script src="lib\jquery.validate.min.js"></script>
     <script src="lib\bootstrap.min.js"></script>
+    <!-- <script src="js\app.js"></script> -->
 
     <!-- Styles -->
     <link rel="stylesheet" href="css\bootstrap.min.css"> -->
     <link rel="stylesheet" href="css\jquery-ui.css">
 
     <script type='text/javascript'>
-        $(document).ready(function() {
-            $("#StartDate").attr("value", Today(0));
-            $("#EndDate").attr("value", Today(1));
-        })
-        
-        function Today(day){
-            var date = new Date();
+        // $(document).ready(function() {
+        //     $("#StartDate").attr("value", Today(0));
+        //     $("#EndDate").attr("value", Today(1));
+        // })
 
-            if(day != 0){
-                date.setDate(date.getDate() + 1); 
-            }
+        // function Today(day){
+        //     var date = new Date();
 
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
+        //     if(day != 0){
+        //         date.setDate(date.getDate() + 1); 
+        //     }
 
-            if (month < 10) month = "0" + month;
-            if (day < 10) day = "0" + day;
+        //     var day = date.getDate();
+        //     var month = date.getMonth() + 1;
+        //     var year = date.getFullYear();
 
-            var today = day + "/" + month + "/" + year; 
+        //     if (month < 10) month = "0" + month;
+        //     if (day < 10) day = "0" + day;
 
-            return today;
-        }
+        //     var today = day + "/" + month + "/" + year; 
+
+        //     return today;
+        // }
 
 
-        $(function () {
-            $("#StartDate").datepicker({
-                dateFormat: "dd/mm/yy",                 
-                //showOn: "button"                            
-            });
+        // $(function () {
+        //     $("#StartDate").datepicker({
+        //         dateFormat: "dd/mm/yy",
+        //         //showOn: "button"                            
+        //     });
 
-            $("#EndDate").datepicker({
-                dateFormat: "dd/mm/yy",                
-            });
-        });
+        //     $("#EndDate").datepicker({
+        //         dateFormat: "dd/mm/yy",
+        //     });
+        // });
 
         //$("#searchForm").validate();
-
-        
     </script>
 </head>
 
@@ -76,7 +75,7 @@
                         <div class="form-group row">
                             <div class="col-md-4"><label for="Address">Address</label></div>
                             <div class="col-md-8">
-                                <textarea class="form-control input-sm" id="address" name="address" rows="6" ></textarea>
+                                <textarea class="form-control input-sm" id="address" name="address" rows="6"></textarea>
                             </div>
                         </div>
 
@@ -84,7 +83,7 @@
                         <div class="form-group row">
                             <div class="col-md-4"><label for="Radius">Radius</label></div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control input-sm" id="radius" name="radius" placeholder="" >
+                                <input type="text" class="form-control input-sm" id="radius" name="radius" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -95,8 +94,7 @@
                         <div class="form-group row">
                             <div class="col-md-4 "><label for="StartDate">Start Date</label></div>
                             <div class="col-md-8">
-                                <input type="text" class="form-control input-sm datepicker" 
-                                    id="StartDate" name="StartDate" >
+                                <input type="text" class="form-control input-sm datepicker" id="StartDate" name="StartDate">
                             </div>
                         </div>
 
@@ -136,7 +134,7 @@
     <div id="dialog">
         <h1>Event lists</h1>
     </div>
-
+    <!-- 
     <script>
         
         $.validator.addMethod("startsWithA", function(value, element){
@@ -216,6 +214,19 @@
         }
 
     </script>
+ -->
+
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script>
+        System.config({
+            meta: {
+                format: 'cjs'
+            }
+        });
+        System.import('js/app.js');
+    </script>
+
+
 </body>
 
 </html>
