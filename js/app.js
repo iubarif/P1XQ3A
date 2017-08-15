@@ -1,7 +1,7 @@
 var _config = require('./config.js');
 var _util = require('./util.js');
 var _dataSrv = require('./dataService.js');
-var _searchObj = require('./entries.js');
+var _entity = require('./entries.js');
 
 
 $(document).ready(function() {
@@ -79,11 +79,11 @@ $(_config.uiControlIds.form).validate({
     submitHandler: function (form) {
         //alert('AJAX Called...');
 
-        _searchObj.address = $(_config.uiControlIds.address).val();
-        _searchObj.radius = $(_config.uiControlIds.address).val();
-        _searchObj.stDate = $(_config.uiControlIds.stdate).val();
-        _searchObj.endDate = $(_config.uiControlIds.enddate).val();
-        _searchObj.category = $(_config.uiControlIds.category).val();        
+        _entity.Searchobject.address = $(_config.uiControlIds.address).val();
+        _entity.Searchobject.radius = $(_config.uiControlIds.address).val();
+        _entity.Searchobject.stDate = $(_config.uiControlIds.stdate).val();
+        _entity.Searchobject.endDate = $(_config.uiControlIds.enddate).val();
+        _entity.Searchobject.category = $(_config.uiControlIds.category).val();        
         
         _dataSrv.getEvents(_dataSrv.testData);
 

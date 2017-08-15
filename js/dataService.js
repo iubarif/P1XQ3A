@@ -1,4 +1,5 @@
 var _config = require('./config.js');
+var _entity = require('./entries.js');
 
 var testData = {
     "Address": "1016 Grob Court, Victoria, BC",
@@ -24,12 +25,10 @@ function getEvents(searchObject) {
 
             
             $.each(ev, function (i, item) {
+                var event = $.extend(new _entity.Event(), ev[i]);
+                debugger;
                 var markup = "<tr><td>" + ev[i].city_name + "</td></tr>"
-                // $(_config.uiControlIds.searchResult).append("<tr>");
-                // $(_config.uiControlIds.searchResult).append("<td>");
-                // $(_config.uiControlIds.searchResult).append(ev[i].description.substring(0, 25));
-                // $(_config.uiControlIds.searchResult).append("</td>");
-                // $(_config.uiControlIds.searchResult).append("</tr>");
+                
 
                 $("table tbody").append(markup);
             });
