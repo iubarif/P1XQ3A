@@ -21,18 +21,22 @@ function getEvents(searchObject) {
 
             var ev = data.events.event;
 
-            //$(_config.uiControlIds.searchResult).append("<table class='myTab'>");
 
             
             $.each(ev, function (i, item) {
                 var event = $.extend(new _entity.Event(), ev[i]);
-                debugger;
-                var markup = "<tr><td>" + ev[i].city_name + "</td></tr>"
+                //debugger;
+                //var markup = "<tr><td>" + event.city_name + "</td></tr>"
                 
+                var img = "";
+                if(event.image){
+                    var thumb = $.extend(new _entity.Thumb(), event.image.thumb); 
+                    img = "<img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +">"
+                }
 
+                var markup = "<tr><td>" + img + "</td></tr>" 
                 $("table tbody").append(markup);
             });
-            //$(_config.uiControlIds.searchResult).append("</table>");
         },
         data: searchObject
     });

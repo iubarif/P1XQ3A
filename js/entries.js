@@ -25,8 +25,19 @@ var Searchobject = class Searchobject {
         this.venue_address ="";
         this.latitude=  "";
         this.longitude =  "";
+
+        this.image=""
     }
   };
 
+  var Thumb = class thumb{
+    constructor() {
+        this.width = "";
+        this.url = "";
+        this.height ="";
+    }
+  }
+
   exports.Searchobject = Searchobject;
   exports.Event = Event;
+  exports.Thumb = Thumb;
