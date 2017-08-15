@@ -56,10 +56,9 @@ $.validator.addMethod("AddressValidation", function (value, element) {
 $(_config.uiControlIds.form).validate({
     rules: _validate.validationRules,    
     highlight: _validate.highlight,    
-    unhighlight: _validate.unhighlight        
-});
-
-$(_config.uiControlIds.form).submit(function(form){
-    _validate.formSubmit(form);
+    unhighlight: _validate.unhighlight, 
+    submitHandler: function() {
+        _validate.formSubmit();
+    }       
 });
 

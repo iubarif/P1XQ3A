@@ -7,7 +7,7 @@ function today(dayInterval){
     }
 
     var day = date.getDate();
-    var month = date.getMonth();
+    var month = date.getMonth()+1;
     var year = date.getFullYear();
 
     if (month < 10) month = "0" + month;

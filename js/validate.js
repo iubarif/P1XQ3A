@@ -37,7 +37,7 @@ function unhighlight(element, errorClass) {
     $(element).closest('.form-group').removeClass('has-error');
 }
 
-function formSubmit(event){        
+function formSubmit(){        
     var srcObj = new _entity.Searchobject();
     
     srcObj.address = $(_config.uiControlIds.address).val();
@@ -46,9 +46,7 @@ function formSubmit(event){
     srcObj.endDate = $(_config.uiControlIds.enddate).val();
     srcObj.category = $(_config.uiControlIds.category).val();
 
-    _dataSrv.getEvents(srcObj);
-        
-    event.preventDefault();
+    _dataSrv.getEvents(srcObj);        
 }
 
 exports.validationRules = validationRules;
