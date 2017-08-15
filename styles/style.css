@@ -2,3 +2,8 @@
     color: red;
     font-size: 0.8em;
 }
+
+.eventful-div{
+    margin: 10px auto  10px auto;
+    max-width: 800px;
+}
