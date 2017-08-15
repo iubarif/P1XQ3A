@@ -12,8 +12,8 @@ var validationRules = {
     address: {
         required: true,
         minlength: 4,
-        maxlength: 250
-        //AddressValidation:true
+        maxlength: 250,
+        AddressValidation:true
     },
     radius: {
         required: true,

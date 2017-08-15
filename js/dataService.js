@@ -40,6 +40,7 @@ function getEvents(searchObject) {
     });
 }
 
+
 function validateAddress(address) {
     //debugger;
 
@@ -59,8 +60,72 @@ function validateAddress(address) {
         }
         
     });
+
+    // var isSuccess = false;
+
+    // $.ajax({
+    //     url: _config.configs.geocodeServiceEndPoint + value,
+    //     type: 'get',
+    //     dataType: 'json',
+    //     async: false,
+    //     success: function (data) {
+    //         //var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
+
+    //         //alert(langLat);
+    //         if (data) {
+    //             isSuccess = true;
+    //         }
+    //     },
+
+    // });
+
+    // return isSuccess;
 }
+
+
+// function validateAddress(address) {
+    
+//     $.when(
+//         $.ajax({
+//             async: false,
+//             url: _config.configs.geocodeServiceEndPoint + address,
+//             type: 'get',
+//             dataType: 'json',                        
+//         })
+//     ).done(function(data){        
+//         return true;
+//     }).fail(function(){
+//         return false;
+//     });
+// }
+
+// var dataOperationOptions = {
+//     method : {},
+//     url : "",
+//     type : "get",
+//     dataType : 'json',
+//     data : {},
+//     success : {}, 
+//     fail : {},
+//     inProgress ={}    
+// },
+
+// function dataOperation(method, dataOperationOptions) {
+//     dataOperationOptions.inProgress();
+
+//     $.when(
+//         method()
+//     ).done(function(data){
+//         dataOperationOptions.success(data);
+//     })    
+//     .fail(function(){})
+//     .progress(function(){
+//         dataOperationOptions.inProgress();
+//     })
+// }
 
 exports.testData = testData;
 exports.getEvents = getEvents;
 exports.validateAddress = validateAddress;
+//exports.dataOperationOptions = dataOperationOptions;
+//exports.dataOperation = dataOperation;

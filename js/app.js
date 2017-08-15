@@ -31,10 +31,24 @@ $.validator.addMethod("CompareDate", function (value, element) {
 }, _config.errorMessages.dateCompare);
 
 $.validator.addMethod("AddressValidation", function (value, element) {
+    
+    //return _dataSrv.validateAddress(value);
+    var isSuccess = false;
 
-    // Validate against Web Api
-    //return false;
-    return _dataSrv.validateAddress(value);
+    $.ajax({
+        url: _config.configs.geocodeServiceEndPoint + value,
+        type: 'get',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            //var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
+            //alert(langLat);
+
+            isSuccess =  true;
+        },        
+    });
+
+    return isSuccess;
 
 }, _config.errorMessages.invalidAddress);
 
