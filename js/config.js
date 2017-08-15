@@ -1,6 +1,6 @@
 var configs = {
     dateFormat: "dd/mm/yy",
-    serviceEndPoint:""    
+    eventServEndPoint:"http://eventfulapi.azurewebsites.net/api/Eventful/"    
 }
 
 var uiControlIds = {
@@ -9,7 +9,8 @@ var uiControlIds = {
     stdate: "#StartDate",
     enddate: "#EndDate",
     category: "#Categories",
-    form: "#searchForm"
+    form: "#searchForm",
+    searchResult: "#searchResult"
 }
 
 var errorMessages = {

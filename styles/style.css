@@ -7,3 +7,11 @@
     margin: 10px auto  10px auto;
     max-width: 800px;
 }
+
+.myTab, th, td {
+    border: 1px solid black;
+ }
+
+ #searchResult{
+     margin: 20px;
+ }

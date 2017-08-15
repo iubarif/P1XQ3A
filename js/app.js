@@ -1,5 +1,7 @@
 var _config = require('./config.js');
 var _util = require('./util.js');
+var _dataSrv = require('./dataService.js');
+var _searchObj = require('./entries.js');
 
 
 $(document).ready(function() {
@@ -21,8 +23,12 @@ $(document).ready(function() {
 
 // Form Submit event
 // $(_config.uiControlIds.form).submit(function (event) {
-//     var x = $(_config.uiControlIds.form).serialize();
-//     alert(x);
+//     //var x = $(_config.uiControlIds.form).serialize();
+//     //alert(x);
+
+//     _searchObj.address = 
+
+//     _dataSrv.getEvents(_dataSrv.testData);
 
 //     event.preventDefault();
 // });
@@ -73,12 +79,15 @@ $(_config.uiControlIds.form).validate({
     submitHandler: function (form) {
         //alert('AJAX Called...');
 
-        // $('#dialog').dialog({
-        //     modal: true,
-        //     title: "Event List",
-        //     width: 1000,
-        //     height: 700
-        // });
+        _searchObj.address = $(_config.uiControlIds.address).val();
+        _searchObj.radius = $(_config.uiControlIds.address).val();
+        _searchObj.stDate = $(_config.uiControlIds.stdate).val();
+        _searchObj.endDate = $(_config.uiControlIds.enddate).val();
+        _searchObj.category = $(_config.uiControlIds.category).val();        
+        
+        _dataSrv.getEvents(_dataSrv.testData);
+
+        event.preventDefault();
     }
 
     // messages: {
