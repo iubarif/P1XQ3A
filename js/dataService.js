@@ -21,8 +21,6 @@ function getEvents(searchObject) {
 
             var ev = data.events.event;
 
-
-            
             $.each(ev, function (i, item) {
                 var event = $.extend(new _entity.Event(), ev[i]);
                 //debugger;
@@ -31,7 +29,7 @@ function getEvents(searchObject) {
                 var img = "";
                 if(event.image){
                     var thumb = $.extend(new _entity.Thumb(), event.image.thumb); 
-                    img = "<img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +">"
+                    img = "<a href='"+ event.url +"'><img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +"></a>"
                 }
 
                 var markup = "<tr><td>" + img + "</td></tr>" 
@@ -42,5 +40,27 @@ function getEvents(searchObject) {
     });
 }
 
+function validateAddress(address) {
+    //debugger;
+
+    $.ajax({
+        url: _config.configs.geocodeServiceEndPoint+address,
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
+
+            alert(langLat);
+
+            return true;
+        },
+        error: function(){
+            return false;
+        }
+        
+    });
+}
+
 exports.testData = testData;
 exports.getEvents = getEvents;
+exports.validateAddress = validateAddress;

@@ -2,6 +2,7 @@ var _config = require('./config.js');
 var _util = require('./util.js');
 var _dataSrv = require('./dataService.js');
 var _entity = require('./entries.js');
+var _validate = require('./validate.js');
 
 
 $(document).ready(function() {
@@ -21,18 +22,6 @@ $(document).ready(function() {
     });
 }) 
 
-// Form Submit event
-// $(_config.uiControlIds.form).submit(function (event) {
-//     //var x = $(_config.uiControlIds.form).serialize();
-//     //alert(x);
-
-//     _searchObj.address = 
-
-//     _dataSrv.getEvents(_dataSrv.testData);
-
-//     event.preventDefault();
-// });
-
 $.validator.addMethod("CompareDate", function (value, element) {
     var stDate = new Date(_util.dateFromddMMyyyy($(_config.uiControlIds.stdate).val()));
     var endDate = new Date(_util.dateFromddMMyyyy(value));
@@ -44,55 +33,19 @@ $.validator.addMethod("CompareDate", function (value, element) {
 $.validator.addMethod("AddressValidation", function (value, element) {
 
     // Validate against Web Api
-    return false;
+    //return false;
+    return _dataSrv.validateAddress(value);
 
-}, _config.errorMessages.dateCompare);
+}, _config.errorMessages.invalidAddress);
 
 // Form validation rule
 $(_config.uiControlIds.form).validate({
-    rules: {
-        address: {
-            required: true,
-            minlength: 4,
-            maxlength: 250,
-            //AddressValidation:true
-        },
-        radius: {
-            required: true,
-            number: true,
-            range: [0.1, 200]
-        },
-        StartDate: {
-            required: true,
-        },
-        EndDate: {
-            required: true,
-            CompareDate: true
-        }
-    },
-    highlight: function (element, errorClass) {
-        $(element).closest('.form-group').addClass('has-error');
-    },
-    unhighlight: function (element, errorClass) {
-        $(element).closest('.form-group').removeClass('has-error');
-    },
-    submitHandler: function (form) {
-        //alert('AJAX Called...');
+    rules: _validate.validationRules,    
+    highlight: _validate.highlight,    
+    unhighlight: _validate.unhighlight        
+});
 
-        _entity.Searchobject.address = $(_config.uiControlIds.address).val();
-        _entity.Searchobject.radius = $(_config.uiControlIds.address).val();
-        _entity.Searchobject.stDate = $(_config.uiControlIds.stdate).val();
-        _entity.Searchobject.endDate = $(_config.uiControlIds.enddate).val();
-        _entity.Searchobject.category = $(_config.uiControlIds.category).val();        
-        
-        _dataSrv.getEvents(_dataSrv.testData);
-
-        event.preventDefault();
-    }
-
-    // messages: {
-    // 	address: "Please enter Address",
-    // 	radius: "Please enter radius",				
-    // }
+$(_config.uiControlIds.form).submit(function(form){
+    _validate.formSubmit(form);
 });
 
