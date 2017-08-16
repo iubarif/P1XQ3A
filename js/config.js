@@ -13,6 +13,8 @@ var uiControlIds = {
     category: "#Categories",
     form: "#searchForm",
     searchResult: "#searchResult",
+    lng: "#lng",
+    lat: "#lat",
     loader: "loader"
 }
 

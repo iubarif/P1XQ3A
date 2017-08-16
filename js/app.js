@@ -36,15 +36,18 @@ $.validator.addMethod("AddressValidation", function (value, element) {
     var isSuccess = false;
     
     //debugger;
+    var lng,lat;
+    $(_config.uiControlIds.lng).val('');
+    $(_config.uiControlIds.lat).val('');
     
     $.ajax({
         url: _config.configs.geocodeServiceEndPoint + value,
         type: 'get',
         dataType: 'json',
         async: false,
-        success: function (data) {
-            //var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
-            //alert(langLat);
+        success: function (data) {            
+            $(_config.uiControlIds.lng).val(data.lng);
+            $(_config.uiControlIds.lat).val(data.lat);
 
             isSuccess =  true;
         },        
@@ -61,6 +64,7 @@ $(_config.uiControlIds.form).validate({
     unhighlight: _validate.unhighlight, 
     submitHandler: function() {        
         $("table tbody").empty(); 
+        
         //$('#searchResultHeader').style.display = none;       
         _validate.formSubmit();
     }       

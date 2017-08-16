@@ -13,14 +13,17 @@ var testData = {
 }
 
 function getEvents(searchObject) {
-    
+        
     $.ajax({
         url: _config.configs.eventServEndPoint,
+        data: searchObject,
         type: 'post',
         dataType: 'json',
         success: function (data) {
 
-            var markup = "<tr><th><div class='panel-heading'>Total Items found : {{total}}</div></th></tr>";
+            debugger;
+            
+            var markup = "<tr><th><div class='panel panel-primary'>Total Items found : {{total}}</div></th></tr>";
             $("table tbody").append(markup.replace("{{total}}",data.total_items));
 
             var ev = data.events.event;
@@ -75,8 +78,7 @@ function getEvents(searchObject) {
                 var markup = '<tr><td>{{template}}</td></tr>';
                 $("table tbody").append(markup.replace('{{template}}', template));
             });
-        },        
-        data: searchObject
+        }                
     });    
 }
 
