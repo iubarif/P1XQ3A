@@ -41,9 +41,9 @@ function formSubmit(){
     var srcObj = new _entity.Searchobject();
     
     srcObj.address = $(_config.uiControlIds.address).val();
-    srcObj.radius = $(_config.uiControlIds.address).val();
-    srcObj.stDate = $(_config.uiControlIds.stdate).val();
-    srcObj.endDate = $(_config.uiControlIds.enddate).val();
+    srcObj.radius = $(_config.uiControlIds.radius).val();
+    srcObj.dateStart = $(_config.uiControlIds.stdate).val();
+    srcObj.dateEnd = $(_config.uiControlIds.enddate).val();
     srcObj.category = $(_config.uiControlIds.category).val();
     srcObj.lat = $(_config.uiControlIds.lat).val();
     srcObj.lng = $(_config.uiControlIds.lng).val();
