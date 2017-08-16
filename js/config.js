@@ -31,7 +31,7 @@ var rowTemplate = `
         <img src={{image}} class="img-rounded" alt="" width="100" height="100">
     </div>
     <div class="col-sm-7">
-        <div class='event-title'><a href='{{url}}'>{{title}}}</a></div>
+        <div class='event-title'><a href='{{url}}'>{{title}}</a></div>
         <div class='event-address'><a href='{{venue_url}}'>{{venue_name}}</a></div>
         <div class='event-desc'>
             {{description}}
