@@ -11,7 +11,6 @@ var testData = {
     "Category": "books"
 }
 
-
 function getEvents(searchObject) {
     $.ajax({
         url: _config.configs.eventServEndPoint,
@@ -22,43 +21,54 @@ function getEvents(searchObject) {
             var ev = data.events.event;
 
             $.each(ev, function (i, item) {
-                // var event = $.extend(new _entity.Event(), ev[i]);
-                // //debugger;
-                // //var markup = "<tr><td>" + event.city_name + "</td></tr>"
-                
-                // var img = "";
-                // if(event.image){
-                //     var thumb = $.extend(new _entity.Thumb(), event.image.thumb); 
-                //     img = "<a href='"+ event.url +"'><img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +"></a>"
-                // }
-
-                // var markup = "<tr><td>" + img + "</td></tr>" 
-                // $("table tbody").append(markup);
 
                 var event = $.extend(new _entity.Event(), ev[i]);
                 var template = _config.rowTemplate;
+                var day;
+                var month;
+                var year;
 
-                var imgUrl = 'styles\notFound.png';
+                var imgUrl = _config.configs.notFoundPicture;
 
-                if ($.isEmptyObject(event.image) === false) {
-                    if ($.isEmptyObject(event.image.thumb) === false) {
-                        if ($.isEmptyObject(event.image.thumb.url === false)) {
+                if (!$.isEmptyObject(event.image)) {
+                    if (!$.isEmptyObject(event.image.thumb)) {
+                        if (!$.isEmptyObject(event.image.thumb.url)) {
                             imgUrl = event.image.thumb.url;
                         }
                     }
                 }
 
+                if (!$.isEmptyObject(event.start_time)) {
+                    var stratDate = new Date(event.start_time);
+
+                    day = stratDate.getDate();
+                    month = _config.monthNames[stratDate.getMonth()];
+                    year = stratDate.getFullYear();
+
+                    if (month < 10) month = "0" + month;
+                    if (day < 10) day = "0" + day;
+                }
+
+                if (!$.isEmptyObject(event.description)) {
+                    event.description = event.description.length > 200 ? event.description.substring(0, 200) + "..." : event.description;
+                }
+                else{
+                    event.description = "";
+                }
                 event.image = imgUrl;
 
-                template = template.replace('{{image}}',event.image);
-                template = template.replace('{{title}}',event.title);
-                template = template.replace('{{url}}',event.url);
-                template = template.replace('{{venue_name}}',event.venue_name);
-                template = template.replace('{{venue_url}}',event.venue_url);                
-                template = template.replace('{{description}}',event.description);   
-                
-                var markup = '<tr><td>{{template}}</td></tr>'; 
-                $("table tbody").append(markup.replace('{{template}}',template));
+                template = template.replace('{{image}}', event.image);
+                template = template.replace('{{title}}', event.title);
+                template = template.replace('{{url}}', event.url);
+                template = template.replace('{{venue_name}}', event.venue_name);
+                template = template.replace('{{venue_url}}', event.venue_url);
+                template = template.replace('{{description}}', event.description);
+                template = template.replace('{{day}}', day);
+                template = template.replace('{{month}}', month);
+                template = template.replace('{{year}}', year);
+
+                var markup = '<tr><td>{{template}}</td></tr>';
+                $("table tbody").append(markup.replace('{{template}}', template));
             });
         },
         data: searchObject
@@ -70,7 +80,7 @@ function validateAddress(address) {
     //debugger;
 
     $.ajax({
-        url: _config.configs.geocodeServiceEndPoint+address,
+        url: _config.configs.geocodeServiceEndPoint + address,
         type: 'get',
         dataType: 'json',
         success: function (data) {
@@ -80,10 +90,10 @@ function validateAddress(address) {
 
             return true;
         },
-        error: function(){
+        error: function () {
             return false;
         }
-        
+
     });
 
     // var isSuccess = false;
@@ -109,7 +119,7 @@ function validateAddress(address) {
 
 
 // function validateAddress(address) {
-    
+
 //     $.when(
 //         $.ajax({
 //             async: false,

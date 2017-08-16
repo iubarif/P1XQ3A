@@ -8,15 +8,11 @@
     max-width: 800px;
 }
 
-.myTab, th, td {
-    border: 1px solid black;
- }
-
  #searchResult{
      margin: 20px;
  }
 
- .date {
+ .edate {
     position: relative;
     width: 70px;
     font-family: Georgia, serif;
@@ -24,24 +20,24 @@
     margin: 0 auto;
 }
 
-.day,
-.month,
-.year {
+.eday,
+.emonth,
+.eyear {
     position: absolute;
 }
 
-.day {
+.eday {
     font-size: 30px;
     top: 15px;
 }
 
-.month {
+.emonth {
     top: 0;
     left: 0;
     font-size: 18px;
 }
 
-.year {
+.eyear {
     top: 19px;
     right: 0;
     font-size: 20px;
@@ -55,11 +51,10 @@
     margin: 20px;
 }
 
-.event-title {
-    margin-top: 10px;
+.event-title {    
     font-size: 1.0em;
     font-weight: bold;
-    color: blue;
+    color: #337ab7;
 }
 
 .event-address, a{
@@ -79,6 +74,7 @@
 }
 
 .event{
-    padding: 10px;
+    /* padding: 10px; */
+    margin: 10px;
     /* border-bottom: 2px solid green; */
 }
