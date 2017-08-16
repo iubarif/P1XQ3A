@@ -22,18 +22,43 @@ function getEvents(searchObject) {
             var ev = data.events.event;
 
             $.each(ev, function (i, item) {
-                var event = $.extend(new _entity.Event(), ev[i]);
-                //debugger;
-                //var markup = "<tr><td>" + event.city_name + "</td></tr>"
+                // var event = $.extend(new _entity.Event(), ev[i]);
+                // //debugger;
+                // //var markup = "<tr><td>" + event.city_name + "</td></tr>"
                 
-                var img = "";
-                if(event.image){
-                    var thumb = $.extend(new _entity.Thumb(), event.image.thumb); 
-                    img = "<a href='"+ event.url +"'><img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +"></a>"
+                // var img = "";
+                // if(event.image){
+                //     var thumb = $.extend(new _entity.Thumb(), event.image.thumb); 
+                //     img = "<a href='"+ event.url +"'><img src=" + thumb.url + " alt= " + event.title +" height=" + thumb.height + " width=" + thumb.width +"></a>"
+                // }
+
+                // var markup = "<tr><td>" + img + "</td></tr>" 
+                // $("table tbody").append(markup);
+
+                var event = $.extend(new _entity.Event(), ev[i]);
+                var template = _config.rowTemplate;
+
+                var imgUrl = 'styles\notFound.png';
+
+                if ($.isEmptyObject(event.image) === false) {
+                    if ($.isEmptyObject(event.image.thumb) === false) {
+                        if ($.isEmptyObject(event.image.thumb.url === false)) {
+                            imgUrl = event.image.thumb.url;
+                        }
+                    }
                 }
 
-                var markup = "<tr><td>" + img + "</td></tr>" 
-                $("table tbody").append(markup);
+                event.image = imgUrl;
+
+                template = template.replace('{{image}}',event.image);
+                template = template.replace('{{title}}',event.title);
+                template = template.replace('{{url}}',event.url);
+                template = template.replace('{{venue_name}}',event.venue_name);
+                template = template.replace('{{venue_url}}',event.venue_url);                
+                template = template.replace('{{description}}',event.description);   
+                
+                var markup = '<tr><td>{{template}}</td></tr>'; 
+                $("table tbody").append(markup.replace('{{template}}',template));
             });
         },
         data: searchObject

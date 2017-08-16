@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventful Search App</title>
+
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- DevExtreme themes -->
+    <!-- <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/devextreme/dist/css/dx.light.css" /> -->
+
+    <!-- A DevExtreme library -->
+    <!-- <script type="text/javascript" src="node_modules/devextreme/dist/js/dx.all.js"></script> -->
+
+    <script src="lib\bootstrap.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css\bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css\jquery-ui.css">
+    <link rel="stylesheet" href="styles\style.css">
+    <style>
+        #gridContainer {
+            height: 440px;
+        }
+
+        img {
+            height: 100px;
+            display: block;
+        }
+
+        
+
+        .date {
+            position: relative;
+            width: 70px;
+            font-family: Georgia, serif;
+            color: #999;
+            margin: 0 auto;
+        }
+
+        .day,
+        .month,
+        .year {
+            position: absolute;
+        }
+
+        .day {
+            font-size: 30px;
+            top: 15px;
+        }
+
+        .month {
+            top: 0;
+            left: 0;
+            font-size: 18px;
+        }
+
+        .year {
+            top: 19px;
+            right: 0;
+            font-size: 20px;
+            rotation: -90deg !important;
+            /* ** Hacks ** */
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+        }
+
+        .demo-container{
+            margin: 20px;
+        }
+
+        .event-title {
+            margin-top: 10px;
+            font-size: 1.0em;
+            font-weight: bold;
+            color: blue;
+        }
+
+        .event-address, a{
+            margin-top: 10px;
+            font-size: 1.0em;
+            color: navy;
+            font-weight: bold;
+        }
+
+        .event-desc{
+            margin-top: 10px;
+            font-size: 1.0em;
+        }
+
+        .event-date{
+            padding: 20px;
+        }
+
+        .event{
+            padding: 10px;
+            /* border-bottom: 2px solid green; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div>
+        <div class="col-sm-2">
+            <img src="styles\notFound.png" alt="" width="70" height="30">
+        </div>
+        <div class="col-sm-7">
+            <div class='event-title'><strong>This is the event Title and it can be long</strong></div>
+            <div class='event-address'><a href='venyaddress.com'>Venu Name</a></div>
+            <div class='event-desc'>
+                TEARS WE CANNOT STOP Join New Republic editor ERIC BATES and MICHAEL ERIC DYSON, author, Georgetown professor...
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="date">
+                <span class="day">30</span>
+                <span class="month">Jun</span>
+                <span class="year">2009</span>
+            </div>
+        </div>
+    </div> -->
+
+
+<!-- <div id='test'></div> -->
+
+
+    <div class="dx-viewport demo-container">
+        <div id="gridContainer">
+            <table>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    $(document).ready(function () {
+        generateMK();
+    });
+
+    var template = `    <div class="event">
+        <div class="col-sm-2">
+            <img src={{image}} class="img-rounded" alt="" width="100" height="50">
+        </div>
+        <div class="col-sm-7">
+            <div class='event-title'><a href='{{url}}'>{{title}}}</a></div>
+            <div class='event-address'><a href='{{url}}'>{{venuName}}</a></div>
+            <div class='event-desc'>
+                {{desc}}
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="event-date">
+                <div class="date">
+                    <span class="day">30</span>
+                    <span class="month">Jun</span>
+                    <span class="year">2009</span>
+                </div>    
+            </div>
+        </div>
+    </div>`
+
+
+
+
+
+    function generateMK() {
+        //var obj = jQuery.parseJSON(events);
+        //alert(template);
+        //$('#test').html(template);
+        
+        $.each(events, function (key, value) {
+
+            var imgUrl = 'styles\notFound.png';
+
+            if ($.isEmptyObject(value.image) === false) {
+                if ($.isEmptyObject(value.image.thumb) === false) {
+                    if ($.isEmptyObject(value.image.thumb.url === false)) {
+                        imgUrl = value.image.thumb.url;
+                    }
+                }
+            }
+
+            // var opt = {
+            //     title: "",
+            //     url: "",
+            //     bdate: "",
+            //     sdate: "",
+            //     venuName: "",
+            //     vUrl: "",
+            //     desc: "",
+            //     address: "",
+            //     lat: "",
+            //     lng: "",
+            //     image: ""
+            // };
+
+            opt = {
+                title: value.title,
+                url: value.url,
+                bdate: $.isEmptyObject(value.start_time) ? '' : value.start_time,
+                sdate: $.isEmptyObject(value.stop_time) ? '' : value.stop_time,
+                venuName: value.venue_name,
+                vUrl: value.venue_url,
+                desc: value.description.length > 30 ? value.description.substring(0,30) + "..." : value.description,
+                address: value.address,
+                lat: value.latitude,
+                lng: value.longitude,
+                image: imgUrl
+            };
+
+            template = template.replace('{{image}}',opt.image);
+            template = template.replace('{{title}}',opt.title);
+            template = template.replace('{{url}}',opt.url);
+            template = template.replace('{{venuName}}',opt.venuName);
+            template = template.replace('{{desc}}',opt.desc);
+
+            $('<tr>').append('<td>').append(template).append('</td>').append('</tr>').appendTo("table tbody");
+            //$("table tbody").append(template);
+        })
+
+
+
+        //console.log(value.title);
+
+
+        // var list = $('<ul />').appendTo('body'),
+        //     listElem = $('<li />').appendTo(list),
+        //     link = $('<a />', {
+        //         'href': 'pending.aspx',
+        //         'class': 'ui-li-icon'
+        //     }).attr('data-container', 'listview').text('My Stuff').appendTo(listElem);
+        // $('<img />', {
+        //     'src': 'images/gf.png',
+        //     'alt': 'alttext'
+        // }).prependTo(link);
+        // $('<span />', {
+        //     'class': 'ui-li-count'
+        // }).text('4').appendTo(link);
+
+    }
+
+
+    var events = [
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": "10012",
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.724573",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/tnr-editor-talks-book-signing-michael-eric-dyso-/E0-001-102060069-3?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-102060069-3",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-73.9964983",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-04-24 19:00:00",
+            "tz_id": null,
+            "description": " TEARS WE CANNOT STOP Join New Republic editor ERIC BATES and MICHAEL ERIC DYSON, author, Georgetown professor and New Republic contributing editor, in conversation about Tears We Cannot Stop: A Sermon to White Americaâ€”Dyson&#39;s urgent, heartfelt, and eloquent new book on race relations in the United States.Â Read Dysonâ€™s excerpt for the New Republic here:Â Tears We Cannot Stop.Â  In this conversation, Bates and Dyson will cover central themes reflected in the book, including but not limited to: the use of humiliation, shame, and terror in suppressing black communities how white Americans can rise up in defense of African AmericansÂ  the new administration and what it means for race relations futher discussion about police brutality, combating injustice and inequalityÂ  Tears We Cannot Stop will be available for purchase, courtesy of WORD Bookstores, and a book signing will commence after the talk. Attendees will receive a complimentary beverage and a New Republic tote! BIOS Michael Eric Dyson is one of Americaâ€™s premier public intellectuals. He occupies the distinguished position of University Professor of Sociology at Georgetown University, has been an ordained minister for 35 years, is a contributing opinion writer for The New York Times, and is a contributing editor for the New Republic and ESPNâ€™s The Undefeated. Ebony magazine named him one of the 100 Most Influential African Americans and one of the 150 most powerful blacks in the nation. Eric Bates is the editor of the New Republic. His work as a journalist has sparked significant reforms and earned many of the profession&#39;s highest honors, including seven National Magazine Awards. Prior to the New Republic, he served as the editor-in-chief of Southern Exposure, investigative editor of Mother Jones, and executive editor of Rolling Stone. ",
+            "modified": "2017-04-13 16:24:18",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "TNR Editor Talks & Book Signing: Michael Eric Dyson, Tears We Cannot Stop",
+            "venue_address": "126 Crosby Street",
+            "geocode_type": "EVDB Geocoder",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": {
+                "small": null,
+                "width": null,
+                "caption": null,
+                "medium": {
+                    "width": "128",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/128x128/other.jpg",
+                    "height": "128"
+                },
+                "url": null,
+                "thumb": {
+                    "width": "48",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/48x48/other.jpg",
+                    "height": "48"
+                },
+                "height": null
+            },
+            "created": "2017-04-12 23:27:47",
+            "venue_id": "V0-001-000297167-7",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Housing Works Bookstore Cafe",
+            "venue_url": "http://newyorkcity.eventful.com/venues/housing-works-bookstore-cafe-/V0-001-000297167-7?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": "10007",
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7157999",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/way-wolf-straight-line-selling-master-art-persua-/E0-001-105304299-4?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-105304299-4",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0111795",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-09-26 18:00:00",
+            "tz_id": null,
+            "description": " ",
+            "modified": "2017-08-02 15:55:32",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Way of the Wolf: Straight Line Selling: Master the Art of Persuasion, Influence, and Success",
+            "venue_address": "97 Warren Street",
+            "geocode_type": "EVDB Geocoder",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": null,
+            "created": "2017-08-02 15:55:32",
+            "venue_id": "V0-001-000663007-9",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Barnes & Noble Booksellers - NY/New York/Tribeca",
+            "venue_url": "http://newyorkcity.eventful.com/venues/barnes-noble-booksellers-nynew-yorktribeca-/V0-001-000663007-9?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7142",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/free-galentines-day-party-and-reading-/E0-001-100078668-5?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-100078668-5",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0064",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-02-13 18:30:00",
+            "tz_id": null,
+            "description": "Treat your lady friends to a pink drink this Galentineâ€™s Day with Riverdale Avenue Bookâ€™s launch of their new book line, Hera. Authors Esme Oliver and Judi Fenell will read from their books, including &quot;Beefcake and Cupcakes.&quot; The first 50 people will receive a bag of only the best Galentineâ€™s goodies. Pink cocktails at $10. We like to think Leslie Knope would approve!",
+            "modified": "2017-02-03 16:47:14",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Free Galentine's Day Party and Reading",
+            "venue_address": "1641 2nd Avenue",
+            "geocode_type": "City Based GeoCodes",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "Camilla34592",
+            "going": null,
+            "country_abbr2": "US",
+            "image": null,
+            "created": "2017-02-03 16:47:14",
+            "venue_id": "V0-001-010154574-6",
+            "tz_city": null,
+            "stop_time": "2017-02-13 21:00:00",
+            "venue_name": "The Daisy",
+            "venue_url": "http://newyorkcity.eventful.com/venues/the-daisy-/V0-001-010154574-6?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": "10007",
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7157999",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/discussion-racism-/E0-001-099632756-8?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-099632756-8",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0111795",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-02-09 18:00:00",
+            "tz_id": null,
+            "description": " Join us for a panel discussion on racism. Our panel includes writer and director Paul Linzy Johnson and authors David S. Reynolds, Edgar J. Ridley and Victoria E. Bynum. Copies of the authors&#39; books may be purchased at the registers. ",
+            "modified": "2017-02-03 01:24:11",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Discussion on Racism",
+            "venue_address": "97 Warren Street",
+            "geocode_type": "EVDB Geocoder",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": null,
+            "created": "2017-01-19 01:34:55",
+            "venue_id": "V0-001-000663007-9",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Barnes & Noble Booksellers - NY/New York/Tribeca",
+            "venue_url": "http://newyorkcity.eventful.com/venues/barnes-noble-booksellers-nynew-yorktribeca-/V0-001-000663007-9?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7142",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/book-club-clash-generations-/E0-001-099842528-0?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-099842528-0",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0064",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-02-01 18:30:00",
+            "tz_id": null,
+            "description": " Save the dateÂ for a special liveÂ book club event with Val Grubb.Â  Weâ€™ll be discussing her new release:Â  Clash of the Generations: Managing the New Workplace Reality. Be ready for an open and constructive discussion! Â  Author Valerie M. Grubb (and 2016 WICT NY President) will discuss her newly released book Clash of the Generations: Managing the New Workplace Reality (Wiley, 2016). Â Whether youâ€™re a brand new manager or a seasoned leader, this timely workshop will offer real-world suggestions and key take-aways that you can implement the next day. Come join us in what is sure to be a lively discussion on what it takes to motivate and engage four generations in the office. Purchase books from Amazon, B&N or your favorite bookseller.Â  Val will sign copies at the book club event.Â  ",
+            "modified": "2017-01-26 07:15:28",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Book Club - Clash of the Generations",
+            "venue_address": "75 9th Avenue, 6th floor , (Between 15th and 16th Street)",
+            "geocode_type": "City Based GeoCodes",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": {
+                "small": null,
+                "width": null,
+                "caption": null,
+                "medium": {
+                    "width": "128",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/128x128/other.jpg",
+                    "height": "128"
+                },
+                "url": null,
+                "thumb": {
+                    "width": "48",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/48x48/other.jpg",
+                    "height": "48"
+                },
+                "height": null
+            },
+            "created": "2017-01-26 07:15:28",
+            "venue_id": "V0-001-010972952-0",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Spectrum News NY1",
+            "venue_url": "http://newyorkcity.eventful.com/venues/spectrum-news-ny1-/V0-001-010972952-0?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7142",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/get-published-/E0-001-099797354-0?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-099797354-0",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0064",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-02-11 10:00:00",
+            "tz_id": null,
+            "description": "The Writerâ€™s Voice and the Community Arts at the West Side YMCA present HOW TO GET PUBLISHED: 2nd annual one day conference with agents, published writers, and editors. The event will include two dynamic panel presentations, a pitch workshop, a chance for questions and discussion as well as a meet and greet luncheon, networking, and book sale.\n\nModerators/Facilitators:\nMindy Lewis, Writerâ€™s Voice instructor and author\nCharles Salzberg, Writerâ€™s Voice instructor and author\nStephanie Lehmann, Writerâ€™s Voice instructor and author\n\nPanelists/Workshop Leaders:\nNoah Ballard, literary agent, Curtis Brown Ltd\nAlexa Stark, literary agent, Trident Media Group\nJody Kahn, literary agent, Brandt & Hochman\nJulia Kardon. literary agent, Mary Evans Inc.\nEmily Griffin, editor, Harper Collins\nStacy Testa, literary agent, Writers House\nJo Ann Miller, independent editor and publishing consultant\nSusan Rabiner, literary agent and co-author of Thinking Like Your Editor: How to Write Great\nSerious Nonfiction and Get It Published\nRita Rosenkranz, literary agent\nVanessa Mobley, editor, Little Brown\nMarcia Butler, author, The Skin Above My Knee\nNora Zelevansky, author, Semi-Charmed Life\n\nTo register, contact: Amanda Selwyn | Director of Community Arts | 212-912-2635 | aselwyn@ymcanyc.org\n\nFor more information please visit: http://www.ymcanyc.org/westside/pages/conversations-on-the-arts",
+            "modified": "2017-01-24 12:46:17",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "How To Get Published",
+            "venue_address": "5 West 63rd Street , (Entrance at 10 West 64th Street)",
+            "geocode_type": "City Based GeoCodes",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "aselwyne0a75",
+            "going": null,
+            "country_abbr2": "US",
+            "image": null,
+            "created": "2017-01-24 11:29:55",
+            "venue_id": "V0-001-009391373-2",
+            "tz_city": null,
+            "stop_time": "2017-02-11 16:00:00",
+            "venue_name": "The Marjorie S. Deane Little Theater",
+            "venue_url": "http://newyorkcity.eventful.com/venues/the-marjorie-s-deane-little-theater-/V0-001-009391373-2?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7127837",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/dare2draw-chat-ramona-fradon-thursday-april-20th-/E0-001-102062295-0?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-102062295-0",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0059413",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-04-20 13:30:00",
+            "tz_id": null,
+            "description": "Dare2Draw is happy to have Ramona Fradon join us for a Chat, on April 20th, at YouTube Space NY. Interview by Edie Nugent.\n\nDare2Draw at Google - YouTube Space NY\nRamona Fradon, working in what was primarily a menâ€™s industry, drew comics for DC in the 1950s and 1960s. She was inducted into the Women Cartoonists Hall of Fame in 1999 and the Will Eisner Comic Book Hall of Fame in 2006.\n\nPlease RSVP, for your event FREE Tickets: https://goo.gl/forms/zo3elf31rC4zvAEs2\n\nRAMONA FRADON -\n(Artist/Co-Creator: Metamorpho; Artist: Aquaman, Brenda Starr)\n\nRamona Fradon is a pioneer for women in comics and one of the greatest comic book artists of DCâ€™s Gold/Silver Age. Ramona began working in comics in 1950. As a woman working in a male-dominated industry, she challenged the status quo and broke new ground for women but never received the same type of acclaim as her male peers.\n\nRamona got work in cartooning shortly after she studied at Parsons School of Design and the Art Studentsâ€™ League of New York, at DC Comics, where she really came into her own as a comics artist. Her Aquaman work is known to be deceptively simple, combining an excellent design sense, a flair for narrative and a cartoonistâ€™s skill at expressive faces. \n\nShe illustrated Aquaman until 1960 and drew short features for Timely and DC. She co-created Metamorpho. She illustrated mystery stories and popular titles such as Plastic Man, Plop, Fighter Fighters, Super Friends and Brenda Starr, working in multiple genres with a flair for the comedic. She has done work for Nickelodeon, Bongo, DC, Archie Comics and Marvel, continuing to showcase her flexibility, draftsmanship, wit and style. In 2006, she was inducted into the Will Eisner Hall of Fame. Sheâ€™s still an inspirational voice in comics, doing regular commissions and convention appearances.\n\nCharacters Created by Ramona Fradon:\nMetamorpho, Tempest, Jayna, Gleek, Zan, Fire, Doctor Mist, Olympian, Sapphire Stagg, Atlanna, Simon Stagg, Icemaiden, Java, Dolphin, Topo.\n\nFor more of her work: http://www.catskillcomics.com/Fradon.htm",
+            "modified": "2017-04-13 00:29:55",
+            "venue_display": "0",
+            "tz_country": null,
+            "performers": null,
+            "title": "Dare2Draw Chat with Ramona Fradon! Thursday, April 20th",
+            "venue_address": "New York, New York, United States",
+            "geocode_type": "EVDB Geocoder",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "info20163",
+            "going": null,
+            "country_abbr2": "US",
+            "image": {
+                "small": null,
+                "width": null,
+                "caption": null,
+                "medium": {
+                    "width": "128",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/128x128/other.jpg",
+                    "height": "128"
+                },
+                "url": null,
+                "thumb": {
+                    "width": "48",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/48x48/other.jpg",
+                    "height": "48"
+                },
+                "height": null
+            },
+            "created": "2017-04-13 00:29:55",
+            "venue_id": "V0-001-000104893-6",
+            "tz_city": null,
+            "stop_time": "2017-04-20 15:30:00",
+            "venue_name": "New York, New York, United States",
+            "venue_url": "http://newyorkcity.eventful.com/venues/new-york-new-york-united-states-/V0-001-000104893-6?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7142",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/conversations-authors-wine-open-bar-book-signing-/E0-001-099278677-2?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-099278677-2",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0064",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-02-02 19:00:00",
+            "tz_id": null,
+            "description": " Have you dreamed of becoming an author? Are you ready to finally turn that book idea into a finished product that will boost your credibility, win you paid speaking engagements, and boost your ability to impact others? Come join us on Thursday at 7p.m. in NYC for conversations with authors, a night of wine and speed mentoring with 3 accomplished authors, in different genres who will give you coaching/motivation for each stage of the writing /publishing process. ClickÂ hereÂ toÂ buyÂ yourÂ ticketÂ today!Â  Your are cordially invited to Enjoy a special book signing & networking with an accomplished panel of published authors Learn insider secrets to self-publishing your first book and promoting yourselfÂ  Wine open bar & appetizers for All Access TicketsÂ  Each All Access ticket comes with an autographed copy of #1 Best-selling author Bert Gervais&#39; recent Book Students with Mentors & and autographed copy Jeff Dess&#39;s highly reviewed new book Trill Motivation Hurry only 9 spots left! Â  &quot;There is no greater agony than bearing the untold story inside of you&quot;- Maya AngelouÂ  Event hosts Jeff Dess & Bert Gervais have written 7 books between them, and wanted to create an experience to share teh benefited from having other authors inspire them during the process. To keep the event focused we are limiting ticket sales and only have 15 spots left.Â  Meet the Authors. ALFRED A. EDMOND JR.Co-Author of Loving In The Grown Zone; Co-Creator of Grown Zone Relationship Education; SVP/ Executive Editor at Large at Black Enterprise http://grownzone.com/ Erica BuddingtonAuthor of four books including Boroughs Apart, HBO DEF Poet & Education Strategist http://www.ericabuddington.com/ Ty Allan JacksonÂ Publisher & Author of Danny Dollar Millionaire & Supa Dupa KidMotivational & Ted X speaker.Â  http://www.bigheadbooks.com/ Event hosts Bert GervaisÂ Best-selling Author of Who&#39;s in Your Top Hive & Students with MentorsInternational Speaker, Event Hostwww.findsuccessmentors.comMr. Jeff DessAuthor of 5 books including Deconstructing Ratchet and Trill Motivation.Disruptive Educator, Event Host. http://www.mrjeffdessworks.com What you will getÂ  General Admission Networking and panel discussion with Authors.Â  All Access Package.Â  Q&A conversation with three accomplished authors to learn insider secrets for writing and publishing your book Unlimited Wine and appetizers open bar An autographed copy of #1 Best-selling author Bert Gervais&#39; recent BookÂ Students with MentorsÂ ( A great gift idea for a young person in your life)Â  An autographed copy of Jeff&#39;s Dess&#39;s most recent bookÂ Trill Motivation.Â  The opportunity to network exclusively with other motivated professionals looking to write booksÂ  Professional photo opportunity with our in-house videographer After a wine and appetizer networking experience, we will have Q&A with a carefully curated group of 15-20 upcoming authors in a state of the art event space. Address: 153 West 27th street, 6th floor, Suite 604New York, NY 10001 Â  ",
+            "modified": "2017-01-30 06:26:04",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Conversations with Authors (Wine Open Bar, Book Signing, and Panel Discussion)",
+            "venue_address": "153 west 27th street, 6th floor, Suite 604.",
+            "geocode_type": "City Based GeoCodes",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": {
+                "small": null,
+                "width": null,
+                "caption": null,
+                "medium": {
+                    "width": "128",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/128x128/other.jpg",
+                    "height": "128"
+                },
+                "url": null,
+                "thumb": {
+                    "width": "48",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/48x48/other.jpg",
+                    "height": "48"
+                },
+                "height": null
+            },
+            "created": "2017-01-08 20:40:58",
+            "venue_id": "V0-001-010911377-4",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Breather.com Event Space",
+            "venue_url": "http://newyorkcity.eventful.com/venues/breathercom-event-space-/V0-001-010911377-4?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": null,
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7142",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/birth-book-course-write-self-publish-your-book-/E0-001-098749971-1?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-098749971-1",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0064",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-01-31 18:30:00",
+            "tz_id": null,
+            "description": " Write & Publish Your Own Book Â Â a six month powerhouse course. Uniquely supported by a master healer 81% of people want to write a book but do not know where to start. Start here. Join us. Tuesdays 6:30-8:30 PM, January 31, February 28, March 21, April 11, May 9 Here are just a few types of people that this course is for: This course is for you if you know your life experience is rich with lessons learned that you wish to share with others. This course is for you if you have a unique idea for a book. This courseÂ is for youÂ if you are a yoga teacher, coach, wellness professional or a consultant who wishes to make a bigger impact and establish your expert status as an &quot;author-ity&quot;. Course includes: 5 group classes: Â 1/31, 2/28, 3/21, 4/11, 5/9 1 private &quot;get clear&quot; coaching session (Extra session for early registration) 24/7 Facebook support Handouts and video support 5 Entrainments with Dr. Cliff Inkles Course Fee 895, includes entrainment by Dr Cliff Inkles at each group class. Through specific, gentle spinal contacts Dr Cliff assists the brain-body to release chronic stress and trauma, while allowing the energy system to reorganize to more complex levels of function and healing. It is then e can better expres our wondrous potential. Learn a step by step method to get the book writtenÂ  Learn how to navigate Amazon.com&#39;s author friendly platform by an expert Learn how to connect to your target audience for best impact Learn how to use your book to enhance your professional and personal credibility Learn what first time authors often do wrong Learn how to get the perfect editors and how to find them affordably and securely Learn all the latest and greatest revolutionary opportunities that exist to facilitate a new author to write and publish a book like a proÂ  Â  FAQs Â  How can I contact the organizer with any questions? Your answer goes here Â  ",
+            "modified": "2017-01-28 22:22:17",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Birth a Book Course: Write & Self Publish Your Book: Union Square, NYC",
+            "venue_address": "928 Broadway",
+            "geocode_type": "City Based GeoCodes",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": {
+                "small": null,
+                "width": null,
+                "caption": null,
+                "medium": {
+                    "width": "128",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/128x128/other.jpg",
+                    "height": "128"
+                },
+                "url": null,
+                "thumb": {
+                    "width": "48",
+                    "url": "http://s1.evcdn.com/store/skin/no_image/categories/48x48/other.jpg",
+                    "height": "48"
+                },
+                "height": null
+            },
+            "created": "2016-12-18 04:19:43",
+            "venue_id": "V0-001-010853511-9",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Dr Cliff Inkles /Awakened Partners",
+            "venue_url": "http://newyorkcity.eventful.com/venues/dr-cliff-inkles-awakened-partners-/V0-001-010853511-9?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        },
+        {
+            "watching_count": null,
+            "olson_path": "America/New_York",
+            "calendar_count": null,
+            "comment_count": null,
+            "region_abbr": "NY",
+            "postal_code": "10007",
+            "going_count": null,
+            "all_day": "0",
+            "latitude": "40.7157999",
+            "groups": null,
+            "url": "http://newyorkcity.eventful.com/events/whoa-baby-guide-new-moms-who-feel-overwhelmed-an-/E0-001-101374374-1?utm_source=apis&utm_medium=apim&utm_campaign=apic",
+            "id": "E0-001-101374374-1",
+            "privacy": "1",
+            "city_name": "New York",
+            "link_count": null,
+            "longitude": "-74.0111795",
+            "country_name": "United States",
+            "country_abbr": "USA",
+            "region_name": "New York",
+            "start_time": "2017-04-11 18:00:00",
+            "tz_id": null,
+            "description": " Four-time Grammy Award-winner Kelly Rowland will be joining us for a talk and signing of her book Whoa, Baby! which is a guide for first-time mothers for the emotional and physical changes to expect after childbirth. Books can be personalized and staff will take posed photos while Kelly is signing. ",
+            "modified": "2017-04-09 01:02:57",
+            "venue_display": "1",
+            "tz_country": null,
+            "performers": null,
+            "title": "Whoa, Baby!: A Guide for New Moms Who Feel Overwhelmed and Freaked Out (and Wonder What the #*$& Just Happened)",
+            "venue_address": "97 Warren Street",
+            "geocode_type": "EVDB Geocoder",
+            "tz_olson_path": null,
+            "recur_string": null,
+            "calendars": null,
+            "owner": "evdb",
+            "going": null,
+            "country_abbr2": "US",
+            "image": null,
+            "created": "2017-03-22 01:28:16",
+            "venue_id": "V0-001-000663007-9",
+            "tz_city": null,
+            "stop_time": null,
+            "venue_name": "Barnes & Noble Booksellers - NY/New York/Tribeca",
+            "venue_url": "http://newyorkcity.eventful.com/venues/barnes-noble-booksellers-nynew-yorktribeca-/V0-001-000663007-9?utm_source=apis&utm_medium=apim&utm_campaign=apic"
+        }
+    ]
+
+</script>
+
+
+</html>

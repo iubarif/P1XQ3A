@@ -26,7 +26,7 @@ var Searchobject = class Searchobject {
         this.latitude=  "";
         this.longitude =  "";
 
-        this.image=""
+        this.image=""        
     }
   };
 
