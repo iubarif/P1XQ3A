@@ -1,3 +1,4 @@
+
 .error{
     color: red;
     font-size: 0.8em;
@@ -5,14 +6,18 @@
 
 .eventful-div{
     margin: 10px auto  10px auto;
+    box-shadow: 7px 7px 10px #888888;
     max-width: 800px;
+    border: none;
+    padding: 10px;
 }
 
- #searchResult{
-     margin: 20px;
- }
+#searchResult{
+    margin: 20px;
+}
 
- .edate {
+
+.edate {
     position: relative;
     width: 70px;
     font-family: Georgia, serif;
@@ -42,13 +47,9 @@
     right: 0;
     font-size: 20px;
     rotation: -90deg !important;
-    /* ** Hacks ** */
+
     -webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
-}
-
-.demo-container{
-    margin: 20px;
 }
 
 .event-title {    
@@ -57,7 +58,8 @@
     color: #337ab7;
 }
 
-.event-address, a{
+
+.event-address{
     margin-top: 10px;
     font-size: 1.0em;
     color: navy;
@@ -73,8 +75,25 @@
     padding: 20px;
 }
 
+
 .event{
     /* padding: 10px; */
-    margin: 10px;
+    margin: 5px;
+    padding:5px;
     /* border-bottom: 2px solid green; */
 }
+
+/* Over ride Bootstrao */
+
+label{
+    font-weight: normal;
+}
+
+body  {
+    background: skyblue; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left, #B9F3ED , #928DCB); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #B9F3ED, #928DCB); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #B9F3ED, #928DCB); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #B9F3ED , #928DCB); /* Standard syntax */
+}
+

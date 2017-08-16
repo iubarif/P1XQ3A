@@ -12,7 +12,8 @@ var uiControlIds = {
     enddate: "#EndDate",
     category: "#Categories",
     form: "#searchForm",
-    searchResult: "#searchResult"
+    searchResult: "#searchResult",
+    loader: "loader"
 }
 
 var errorMessages = {

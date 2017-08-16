@@ -24,128 +24,47 @@
     <link rel="stylesheet" href="css\jquery-ui.css">
     <link rel="stylesheet" href="styles\style.css">
     <style>
-        #gridContainer {
-            height: 440px;
-        }
-
-        img {
-            height: 100px;
-            display: block;
-        }
-
         
-
-        .date {
-            position: relative;
-            width: 70px;
-            font-family: Georgia, serif;
-            color: #999;
-            margin: 0 auto;
-        }
-
-        .day,
-        .month,
-        .year {
-            position: absolute;
-        }
-
-        .day {
-            font-size: 30px;
-            top: 15px;
-        }
-
-        .month {
-            top: 0;
-            left: 0;
-            font-size: 18px;
-        }
-
-        .year {
-            top: 19px;
-            right: 0;
-            font-size: 20px;
-            rotation: -90deg !important;
-            /* ** Hacks ** */
-            -webkit-transform: rotate(-90deg);
-            -moz-transform: rotate(-90deg);
-        }
-
-        .demo-container{
-            margin: 20px;
-        }
-
-        .event-title {
-            margin-top: 10px;
-            font-size: 1.0em;
-            font-weight: bold;
-            color: blue;
-        }
-
-        .event-address, a{
-            margin-top: 10px;
-            font-size: 1.0em;
-            color: navy;
-            font-weight: bold;
-        }
-
-        .event-desc{
-            margin-top: 10px;
-            font-size: 1.0em;
-        }
-
-        .event-date{
-            padding: 20px;
-        }
-
-        .event{
-            padding: 10px;
-            /* border-bottom: 2px solid green; */
-        }
     </style>
 </head>
 
 <body>
-
-    <!-- <div>
-        <div class="col-sm-2">
-            <img src="styles\notFound.png" alt="" width="70" height="30">
-        </div>
-        <div class="col-sm-7">
-            <div class='event-title'><strong>This is the event Title and it can be long</strong></div>
-            <div class='event-address'><a href='venyaddress.com'>Venu Name</a></div>
-            <div class='event-desc'>
-                TEARS WE CANNOT STOP Join New Republic editor ERIC BATES and MICHAEL ERIC DYSON, author, Georgetown professor...
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="date">
-                <span class="day">30</span>
-                <span class="month">Jun</span>
-                <span class="year">2009</span>
-            </div>
-        </div>
-    </div> -->
-
-
-<!-- <div id='test'></div> -->
-
-
-    <div class="dx-viewport demo-container">
-        <div id="gridContainer">
-            <table>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
+    some thing
+    <div id="loader"></div>
+    
+    <div style="display:none;" id="myDiv" class="animate-bottom">
+      <h2>Tada!</h2>
+      <p>Some text in my newly loaded page..</p>
     </div>
-
 
 </body>
 
 <script>
+
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(showPage, 7000);
+}
+
+function showPage(onOf) {
+  
+    document.getElementById("loader").style.display =  onOf ? "block" : "none";          
+  //document.getElementById("myDiv").style.display = "block";
+}
+
     $(document).ready(function () {
-        generateMK();
+        //generateMK();
+        //showPage();
+        //myFunction();
+
+        setTimeout(function()
+        {
+            showPage(false);
+        }, 7000);
+        
+        showPage(true);
+        
     });
 
     var template = `    <div class="event">
@@ -190,7 +109,7 @@
                     }
                 }
             }
-            
+
             opt = {
                 title: value.title,
                 url: value.url,
@@ -214,26 +133,6 @@
             $('<tr>').append('<td>').append(template).append('</td>').append('</tr>').appendTo("table tbody");
             //$("table tbody").append(template);
         })
-
-
-
-        //console.log(value.title);
-
-
-        // var list = $('<ul />').appendTo('body'),
-        //     listElem = $('<li />').appendTo(list),
-        //     link = $('<a />', {
-        //         'href': 'pending.aspx',
-        //         'class': 'ui-li-icon'
-        //     }).attr('data-container', 'listview').text('My Stuff').appendTo(listElem);
-        // $('<img />', {
-        //     'src': 'images/gf.png',
-        //     'alt': 'alttext'
-        // }).prependTo(link);
-        // $('<span />', {
-        //     'class': 'ui-li-count'
-        // }).text('4').appendTo(link);
-
     }
 
 

@@ -1,5 +1,6 @@
 var _config = require('./config.js');
 var _entity = require('./entries.js');
+var _util = require('./util.js');
 
 var testData = {
     "Address": "1016 Grob Court, Victoria, BC",
@@ -12,11 +13,15 @@ var testData = {
 }
 
 function getEvents(searchObject) {
+    
     $.ajax({
         url: _config.configs.eventServEndPoint,
         type: 'post',
         dataType: 'json',
         success: function (data) {
+
+            var markup = "<tr><th><div class='panel-heading'>Total Items found : {{total}}</div></th></tr>";
+            $("table tbody").append(markup.replace("{{total}}",data.total_items));
 
             var ev = data.events.event;
 
@@ -70,52 +75,55 @@ function getEvents(searchObject) {
                 var markup = '<tr><td>{{template}}</td></tr>';
                 $("table tbody").append(markup.replace('{{template}}', template));
             });
-        },
+        },        
         data: searchObject
-    });
+    });    
 }
 
 
-function validateAddress(address) {
-    //debugger;
+// function validateAddress(address) {
+//     //_util.showBusy(true);
 
-    $.ajax({
-        url: _config.configs.geocodeServiceEndPoint + address,
-        type: 'get',
-        dataType: 'json',
-        success: function (data) {
-            var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
+//     $.ajax({
+//         url: _config.configs.geocodeServiceEndPoint + address,
+//         type: 'get',
+//         dataType: 'json',
+//         success: function (data) {
+//             var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
 
-            alert(langLat);
+//             alert(langLat);
 
-            return true;
-        },
-        error: function () {
-            return false;
-        }
+//             return true;
+//         },
+//         error: function () {
+//             return false;
+//         }
 
-    });
+//     });
+//     // .done(function() {
+//     //     _util.showBusy(false);
+//     // });
 
-    // var isSuccess = false;
+//     // var isSuccess = false;
 
-    // $.ajax({
-    //     url: _config.configs.geocodeServiceEndPoint + value,
-    //     type: 'get',
-    //     dataType: 'json',
-    //     async: false,
-    //     success: function (data) {
-    //         //var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
+//     // $.ajax({
+//     //     url: _config.configs.geocodeServiceEndPoint + value,
+//     //     type: 'get',
+//     //     dataType: 'json',
+//     //     async: false,
+//     //     success: function (data) {
+//     //         //var langLat = "Lon : " + data.lng + " , Lat : " + data.lat;
 
-    //         //alert(langLat);
-    //         if (data) {
-    //             isSuccess = true;
-    //         }
-    //     },
+//     //         //alert(langLat);
+//     //         if (data) {
+//     //             isSuccess = true;
+//     //         }
+//     //     },
 
-    // });
+//     // });
 
-    // return isSuccess;
-}
+//     // return isSuccess;
+// }
 
 
 // function validateAddress(address) {
@@ -161,6 +169,6 @@ function validateAddress(address) {
 
 exports.testData = testData;
 exports.getEvents = getEvents;
-exports.validateAddress = validateAddress;
+//exports.validateAddress = validateAddress;
 //exports.dataOperationOptions = dataOperationOptions;
 //exports.dataOperation = dataOperation;

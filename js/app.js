@@ -34,7 +34,9 @@ $.validator.addMethod("AddressValidation", function (value, element) {
     
     //return _dataSrv.validateAddress(value);
     var isSuccess = false;
-
+    
+    //debugger;
+    
     $.ajax({
         url: _config.configs.geocodeServiceEndPoint + value,
         type: 'get',
@@ -57,7 +59,9 @@ $(_config.uiControlIds.form).validate({
     rules: _validate.validationRules,    
     highlight: _validate.highlight,    
     unhighlight: _validate.unhighlight, 
-    submitHandler: function() {
+    submitHandler: function() {        
+        $("table tbody").empty(); 
+        //$('#searchResultHeader').style.display = none;       
         _validate.formSubmit();
     }       
 });
