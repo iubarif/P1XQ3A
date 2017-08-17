@@ -99,6 +99,19 @@ function getEvents(searchObject) {
                     }
                 }
             }
+        },
+        error: function(xhr, status, error) {
+            if(xhr.status){
+                NotFound();
+            }
+            else{
+                var markup = "<tr><th><div class='panel panel-primary'>{{status}} - {{xhrstatus}} : {{error}}</div></th></tr>";
+                markup = markup.replace("{{status}}",status);
+                markup = markup.replace("{{xhrstatus}}",xhr.status);
+                markup = markup.replace("{{error}}",error)
+                
+                $(_config.uiControlIds.searchTable).append(markup);
+            }                            
         }
     });
 }
@@ -106,7 +119,7 @@ function getEvents(searchObject) {
 
 function NotFound(){
     var markup = "<tr><th><div class='panel panel-primary'>No item found for this search criteria</div></th></tr>";
-    $("table tbody").append(markup);
+    $(_config.uiControlIds.searchTable).append(markup);
 }
 
 exports.testData = testData;
