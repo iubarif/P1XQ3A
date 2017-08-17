@@ -5,17 +5,16 @@
 }
 
 .eventful-div{
-    margin: 10px auto  10px auto;
+    margin: 10px auto  5px auto;
     box-shadow: 7px 7px 10px #888888;
-    max-width: 800px;
+    max-width: 1000px;
     border: none;
-    padding: 10px;
+    padding: 5px;
 }
 
 #searchResult{
-    margin: 20px;
+    margin: 5px;
 }
-
 
 .edate {
     position: relative;
@@ -52,15 +51,17 @@
     -moz-transform: rotate(-90deg);
 }
 
-.event-title {    
-    font-size: 1.2em;    
-    color: #337ab7;
+.event-title {        
+    font-size: 1.25em; 
+    /* color: #337ab7; */   
+    /* color: #337ab7; */
 }
 
 
 .event-address{
     margin-top: 10px;
     font-size: 1.0em;
+    font-weight: bold;
     color: navy;    
 }
 
@@ -76,10 +77,32 @@
 
 .event{
     /* padding: 10px; */
-    margin: 5px;
-    padding:5px;
-    /* border-bottom: 2px solid green; */
+    margin: 10px;
+    padding:0px;
+    
+    /* border-bottom: 2px solid red; */
 }
+
+.event-devider{
+    border-bottom: 1px solid skyblue;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.eventful-image{
+    /*margin-top:5px; */
+    /* position: relative; */
+}
+
+#searchResult{
+    max-height: 550px;
+    overflow-y: scroll;
+}
+
+.eventful-form-content{
+    border-bottom: 2px solid green;
+}
+
 
 /* Over ride Bootstrao */
 

@@ -29,9 +29,9 @@ var errorMessages = {
 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 var rowTemplate = `    
-<div class="event">
+<div class="event row">
     <div class="col-sm-2">
-        <img src={{image}} class="img-rounded" alt="" width="100" height="100">
+        <img src={{image}} class="img-rounded eventful-image" alt="" width="100" height="100">
     </div>
     <div class="col-sm-7">
         <div class='event-title'><a href='{{url}}'>{{title}}</a></div>
@@ -48,8 +48,10 @@ var rowTemplate = `
                 <span class="eyear">{{year}}</span>
             </div>    
         </div>
-    </div>
-</div>`
+    </div>    
+</div>
+<div class="row event-devider"></div>
+`
 
 
 exports.configs = configs;

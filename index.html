@@ -17,13 +17,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="css\bootstrap.min.css"> -->
     <link rel="stylesheet" href="css\jquery-ui.css">
-    <link rel="stylesheet" href="styles\style.css">
-
-
-    <!-- Datatable  -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-  
+    <link rel="stylesheet" href="styles\style.css">  
 </head>
 
 <body>
@@ -93,22 +87,18 @@
 
                 <div class="row">
                     <div class="form-group col-sm-6"></div>
-                    <div class="form-group col-sm-6">
-                        <input type="submit" class="btn btn-primary" value="Submit" style="float: right; width:150px" id="submitButton"/>
+                    <div class="form-group col-sm-6">                        
+                        <input type="submit" class="btn btn-primary" value="Submit" 
+                        style="float: right; width:150px" id="submitButton"/>                    
                     </div>
                 </div>
 
             </form>
-        </div>
+        </div>       
     </div>
 
-    <div id="dialog" class="panel eventful-div">
-        
-        <!-- <div class="panel-heading" style="display:none;" id="searchResultHeader">
-            <p class="panel-title">Search results</p>
-        </div> -->
-
-        <div id="searchResult">
+    <div id="dialog" class="panel eventful-div">       
+        <div id="searchResult" class="panel">
             <table id="searchTable">
                 <tbody>
                     <tr>
@@ -118,9 +108,7 @@
             </table>
         </div>
     </div>
-    
-    <!-- busy spinner -->
-    <div id="loader" style="display:none;"></div>
+
 
     <!-- System js Module loader -->
     <script src="node_modules/systemjs/dist/system.js"></script>

@@ -24,7 +24,7 @@ var validationRules = {
     },
     StartDate: {
         required: true,
-        DateFormatCheck: true
+        DateFormatCheck: true        
     },
     EndDate: {
         required: true,

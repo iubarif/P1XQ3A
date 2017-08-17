@@ -20,7 +20,11 @@ $(document).ready(function() {
 
     $(_config.uiControlIds.enddate).datepicker({
         dateFormat: _config.configs.dateFormat
+        //showOn: "button"
     });
+
+    // // For testing remove later
+    // _dataSrv.getEvents(_dataSrv.testData);
 }) 
 
 $.validator.addMethod("CompareDate", function (value, element) {

@@ -2,11 +2,10 @@ var _config = require('./config.js');
 var _entity = require('./entries.js');
 var _util = require('./util.js');
 
-var testData = {
-    "Address": "1016 Grob Court, Victoria, BC",
+var testData = {    
     "Radius": 1,
-    "DateStart": "2017-01-01T00:00:00",
-    "DateEnd": "2017-01-02T00:00:00",
+    "DateStart": "16/08/2017",
+    "DateEnd": "16/09/2017",
     "Lat": 40.712784,
     "Lng": -74.005941,
     "Category": "books"
@@ -31,7 +30,7 @@ function getEvents(searchObject) {
                         if (!$.isEmptyObject(eventRoot.events.event)) {
 
                             if (!$.isEmptyObject(eventRoot.total_items)) {
-                                var markup = "<tr><th><div class='panel panel-primary'>Total Items found : {{total}}</div></th></tr>";
+                                var markup = "<tr><th><div class='panel panel-primary panel-heading'>Total Items found : {{total}}</div></th></tr>";
                                 $(_config.uiControlIds.searchTable).append(markup.replace("{{total}}", eventRoot.total_items));
 
                                 var ev = eventRoot.events.event;
