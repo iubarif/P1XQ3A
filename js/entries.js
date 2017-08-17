@@ -8,6 +8,9 @@ var Searchobject = class Searchobject {
         this.dateStart = "";
         this.dateEnd = "";
         this.category = "";
+        
+        // this.page_number = "";
+		// this.page_size = "";		
     }
 };
 
@@ -38,6 +41,14 @@ var Thumb = class thumb {
     }
 };
 
+var PagePayload = class thumb {
+    constructor() {
+        this.page_number = "";
+        this.page_size = "";
+        this.page_count = "";
+    }
+};
+
 var EventfulRoot = class EventfulRootObject {
     constructor() {
         this.last_item = "";
@@ -56,3 +67,4 @@ exports.Searchobject = Searchobject;
 exports.EventfulRoot = EventfulRoot;
 exports.Event = Event;
 exports.Thumb = Thumb;
+exports.PagePayload = PagePayload;

@@ -5,23 +5,26 @@ var _dataSrv = require('./dataService.js');
 
 var validationMethods = {
     CompareDate: "CompareDate",
-    AddressValidation: "AddressValidation"
+    AddressValidation: "AddressValidation",
+    DateFormat: "DateFormatCheck"
 }
 
 var validationRules = {
     address: {
         required: true,
-        minlength: 4,
+        minlength: 15,
         maxlength: 250,
         AddressValidation:true
     },
     radius: {
-        required: true,
-        number: true,
-        range: [0.1, 200]
+        required: false,
+        //number: true,
+        digits:true,
+        range: [1, 300]
     },
     StartDate: {
         required: true,
+        DateFormatCheck: true
     },
     EndDate: {
         required: true,
@@ -31,10 +34,12 @@ var validationRules = {
 
 function highlight(element, errorClass) {
     $(element).closest('.form-group').addClass('has-error');
+    $(_config.uiControlIds.submitButton).prop('disabled', true);
 }
 
 function unhighlight(element, errorClass) {
     $(element).closest('.form-group').removeClass('has-error');
+    $(_config.uiControlIds.submitButton).prop('disabled', false);
 }
 
 function formSubmit(){        
@@ -47,6 +52,9 @@ function formSubmit(){
     srcObj.category = $(_config.uiControlIds.category).val();
     srcObj.lat = $(_config.uiControlIds.lat).val();
     srcObj.lng = $(_config.uiControlIds.lng).val();
+
+    // srcObj.page_number = 1;
+    // srcObj.page_size = 250;
         
     _dataSrv.getEvents(srcObj);        
 }

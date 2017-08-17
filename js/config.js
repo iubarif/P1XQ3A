@@ -15,12 +15,15 @@ var uiControlIds = {
     searchResult: "#searchResult",
     lng: "#lng",
     lat: "#lat",
-    loader: "loader"
+    loader: "#loader",
+    searchTable: "#searchTable",
+    submitButton: "#submitButton"
 }
 
 var errorMessages = {
     dateCompare: "End date can not be smaller than start date.",
-    invalidAddress: "Invalid address."
+    invalidAddress: "Invalid address.",
+    dateformat: "Correct date format should be dd/mm/yyyy"
 }
 
 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

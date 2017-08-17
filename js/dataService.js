@@ -26,64 +26,88 @@ function getEvents(searchObject) {
             if (data != null) {
                 eventRoot = $.extend(new _entity.EventfulRoot(), data);
 
-                var markup = "<tr><th><div class='panel panel-primary'>Total Items found : {{total}}</div></th></tr>";
-                $("table tbody").append(markup.replace("{{total}}", eventRoot.total_items));
+                if (!$.isEmptyObject(eventRoot)) {
+                    if (!$.isEmptyObject(eventRoot.events)) {
+                        if (!$.isEmptyObject(eventRoot.events.event)) {
 
-                var ev = eventRoot.events.event;
+                            if (!$.isEmptyObject(eventRoot.total_items)) {
+                                var markup = "<tr><th><div class='panel panel-primary'>Total Items found : {{total}}</div></th></tr>";
+                                $(_config.uiControlIds.searchTable).append(markup.replace("{{total}}", eventRoot.total_items));
 
-                $.each(ev, function (i, item) {
+                                var ev = eventRoot.events.event;
 
-                    var event = $.extend(new _entity.Event(), ev[i]);
-                    var template = _config.rowTemplate;
-                    var day;
-                    var month;
-                    var year;
+                                $.each(ev, function (i, item) {
 
-                    var imgUrl = _config.configs.notFoundPicture;
+                                    var event = $.extend(new _entity.Event(), ev[i]);
+                                    var template = _config.rowTemplate;
+                                    var day;
+                                    var month;
+                                    var year;
 
-                    if (!$.isEmptyObject(event.image)) {
-                        if (!$.isEmptyObject(event.image.thumb)) {
-                            if (!$.isEmptyObject(event.image.thumb.url)) {
-                                imgUrl = event.image.thumb.url;
+                                    var imgUrl = _config.configs.notFoundPicture;
+
+                                    if (!$.isEmptyObject(event.image)) {
+                                        if (!$.isEmptyObject(event.image.thumb)) {
+                                            if (!$.isEmptyObject(event.image.thumb.url)) {
+                                                imgUrl = event.image.thumb.url;
+                                            }
+                                        }
+                                    }
+
+                                    if (!$.isEmptyObject(event.start_time)) {
+                                        var stratDate = new Date(event.start_time);
+
+                                        day = stratDate.getDate();
+                                        month = _config.monthNames[stratDate.getMonth()];
+                                        year = stratDate.getFullYear();
+
+                                        if (month < 10) month = "0" + month;
+                                        if (day < 10) day = "0" + day;
+                                    }
+
+                                    if (!$.isEmptyObject(event.description)) {
+                                        event.description = event.description.length > 200 ? event.description.substring(0, 200) + "..." : event.description;
+                                    }
+                                    else {
+                                        event.description = "";
+                                    }
+                                    event.image = imgUrl;
+
+                                    template = template.replace('{{image}}', event.image);
+                                    template = template.replace('{{title}}', event.title);
+                                    template = template.replace('{{url}}', event.url);
+                                    template = template.replace('{{venue_name}}', event.venue_name);
+                                    template = template.replace('{{venue_url}}', event.venue_url);
+                                    template = template.replace('{{description}}', event.description);
+                                    template = template.replace('{{day}}', day);
+                                    template = template.replace('{{month}}', month);
+                                    template = template.replace('{{year}}', year);
+
+                                    var markup = '<tr><td>{{template}}</td></tr>';
+                                    $(_config.uiControlIds.searchTable).append(markup.replace('{{template}}', template));
+                                });
+                            }
+                            else{
+                                NotFound();                                
                             }
                         }
+                        else{
+                            NotFound();
+                        }
                     }
-
-                    if (!$.isEmptyObject(event.start_time)) {
-                        var stratDate = new Date(event.start_time);
-
-                        day = stratDate.getDate();
-                        month = _config.monthNames[stratDate.getMonth()];
-                        year = stratDate.getFullYear();
-
-                        if (month < 10) month = "0" + month;
-                        if (day < 10) day = "0" + day;
+                    else{
+                        NotFound();
                     }
-
-                    if (!$.isEmptyObject(event.description)) {
-                        event.description = event.description.length > 200 ? event.description.substring(0, 200) + "..." : event.description;
-                    }
-                    else {
-                        event.description = "";
-                    }
-                    event.image = imgUrl;
-
-                    template = template.replace('{{image}}', event.image);
-                    template = template.replace('{{title}}', event.title);
-                    template = template.replace('{{url}}', event.url);
-                    template = template.replace('{{venue_name}}', event.venue_name);
-                    template = template.replace('{{venue_url}}', event.venue_url);
-                    template = template.replace('{{description}}', event.description);
-                    template = template.replace('{{day}}', day);
-                    template = template.replace('{{month}}', month);
-                    template = template.replace('{{year}}', year);
-
-                    var markup = '<tr><td>{{template}}</td></tr>';
-                    $("table tbody").append(markup.replace('{{template}}', template));
-                });
+                }
             }
         }
     });
+}
+
+
+function NotFound(){
+    var markup = "<tr><th><div class='panel panel-primary'>No item found for this search criteria</div></th></tr>";
+    $("table tbody").append(markup);
 }
 
 exports.testData = testData;
