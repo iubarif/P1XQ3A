@@ -12,6 +12,18 @@
     padding: 5px;
 }
 
+.eventful-Loader{
+    margin: 10px auto  5px auto;    
+    max-width: 1000px;
+    border: none;
+    padding: 5px;    
+}
+
+.event-loading {
+    display:block;
+    margin:auto;
+}
+
 #searchResult{
     margin: 5px;
 }
@@ -102,7 +114,6 @@
 .eventful-form-content{
     border-bottom: 2px solid green;
 }
-
 
 /* Over ride Bootstrao */
 

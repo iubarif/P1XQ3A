@@ -46,6 +46,7 @@ $.validator.addMethod("AddressValidation", function (value, element) {
     $(_config.uiControlIds.lng).val('');
     $(_config.uiControlIds.lat).val('');
     
+    $(_config.uiControlIds.loader).html("Loading......");
     $.ajax({
         url: _config.configs.geocodeServiceEndPoint + value,
         type: 'get',
@@ -57,6 +58,8 @@ $.validator.addMethod("AddressValidation", function (value, element) {
 
             isSuccess =  true;
         },        
+    }).done(function(){
+        $(_config.uiControlIds.loader).html("");        
     });
 
     return isSuccess;
@@ -78,8 +81,9 @@ $(_config.uiControlIds.form).validate({
     submitHandler: function() {
         _render.disableSubmit(true);
         $(_config.uiControlIds.searchTable).empty();         
-        $(_config.uiControlIds.loader).html("Loading......");
-        
+        $(_config.uiControlIds.loader).html("<img src='styles\\Reload.gif' alt='Loading .. ' />");
+        $(_config.uiControlIds.loader).addClass("eventful-Loader");
+
         $.when(_dataSrv.formSubmit()).done(function(data){
             _render.EventAJAXCallSuccess(data);
             
@@ -88,6 +92,7 @@ $(_config.uiControlIds.form).validate({
         }).always(function(){
             _render.disableSubmit(false);
             $(_config.uiControlIds.loader).html("");
+            $(_config.uiControlIds.loader).removeClass("eventful-Loader");
         });
     }         
 });
