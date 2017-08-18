@@ -1,8 +1,7 @@
 var _config = require('./config.js');
 var _entity = require('./entries.js');
-var _util = require('./util.js');
 
-var testData = {    
+var testData = {
     "Radius": 1,
     "DateStart": "16/08/2017",
     "DateEnd": "16/09/2017",
@@ -13,114 +12,37 @@ var testData = {
 
 function getEvents(searchObject) {
 
+    var dfd = new $.Deferred();
+
     $.ajax({
         url: _config.configs.eventServEndPoint,
         data: searchObject,
         type: 'post',
         dataType: 'json',
-        success: function (data) {
-
-            var eventRoot;
-
-            if (data != null) {
-                eventRoot = $.extend(new _entity.EventfulRoot(), data);
-
-                if (!$.isEmptyObject(eventRoot)) {
-                    if (!$.isEmptyObject(eventRoot.events)) {
-                        if (!$.isEmptyObject(eventRoot.events.event)) {
-
-                            if (!$.isEmptyObject(eventRoot.total_items)) {
-                                var markup = "<tr><th><div class='panel panel-primary panel-heading'>Total Items found : {{total}}</div></th></tr>";
-                                $(_config.uiControlIds.searchTable).append(markup.replace("{{total}}", eventRoot.total_items));
-
-                                var ev = eventRoot.events.event;
-
-                                $.each(ev, function (i, item) {
-
-                                    var event = $.extend(new _entity.Event(), ev[i]);
-                                    var template = _config.rowTemplate;
-                                    var day;
-                                    var month;
-                                    var year;
-
-                                    var imgUrl = _config.configs.notFoundPicture;
-
-                                    if (!$.isEmptyObject(event.image)) {
-                                        if (!$.isEmptyObject(event.image.thumb)) {
-                                            if (!$.isEmptyObject(event.image.thumb.url)) {
-                                                imgUrl = event.image.thumb.url;
-                                            }
-                                        }
-                                    }
-
-                                    if (!$.isEmptyObject(event.start_time)) {
-                                        var stratDate = new Date(event.start_time);
-
-                                        day = stratDate.getDate();
-                                        month = _config.monthNames[stratDate.getMonth()];
-                                        year = stratDate.getFullYear();
-
-                                        if (month < 10) month = "0" + month;
-                                        if (day < 10) day = "0" + day;
-                                    }
-
-                                    if (!$.isEmptyObject(event.description)) {
-                                        event.description = event.description.length > 200 ? event.description.substring(0, 200) + "..." : event.description;
-                                    }
-                                    else {
-                                        event.description = "";
-                                    }
-                                    event.image = imgUrl;
-
-                                    template = template.replace('{{image}}', event.image);
-                                    template = template.replace('{{title}}', event.title);
-                                    template = template.replace('{{url}}', event.url);
-                                    template = template.replace('{{venue_name}}', event.venue_name);
-                                    template = template.replace('{{venue_url}}', event.venue_url);
-                                    template = template.replace('{{description}}', event.description);
-                                    template = template.replace('{{day}}', day);
-                                    template = template.replace('{{month}}', month);
-                                    template = template.replace('{{year}}', year);
-
-                                    var markup = '<tr><td>{{template}}</td></tr>';
-                                    $(_config.uiControlIds.searchTable).append(markup.replace('{{template}}', template));
-                                });
-                            }
-                            else{
-                                NotFound();                                
-                            }
-                        }
-                        else{
-                            NotFound();
-                        }
-                    }
-                    else{
-                        NotFound();
-                    }
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            if(xhr.status){
-                NotFound();
-            }
-            else{
-                var markup = "<tr><th><div class='panel panel-primary'>{{status}} - {{xhrstatus}} : {{error}}</div></th></tr>";
-                markup = markup.replace("{{status}}",status);
-                markup = markup.replace("{{xhrstatus}}",xhr.status);
-                markup = markup.replace("{{error}}",error)
-                
-                $(_config.uiControlIds.searchTable).append(markup);
-            }                            
-        }
+        success: dfd.resolve,
+        error: dfd.reject
     });
+
+    return dfd.promise();
 }
 
+function formSubmit() {
 
-function NotFound(){
-    var markup = "<tr><th><div class='panel panel-primary'>No item found for this search criteria</div></th></tr>";
-    $(_config.uiControlIds.searchTable).append(markup);
+    var srcObj = new _entity.Searchobject();
+
+    srcObj.address = $(_config.uiControlIds.address).val();
+    srcObj.radius = $(_config.uiControlIds.radius).val();
+    srcObj.dateStart = $(_config.uiControlIds.stdate).val();
+    srcObj.dateEnd = $(_config.uiControlIds.enddate).val();
+    srcObj.category = $(_config.uiControlIds.category).val();
+    srcObj.lat = $(_config.uiControlIds.lat).val();
+    srcObj.lng = $(_config.uiControlIds.lng).val();
+
+    // srcObj.page_number = 1; srcObj.page_size = 250;
+
+    return getEvents(srcObj);
 }
 
 exports.testData = testData;
 exports.getEvents = getEvents;
+exports.formSubmit = formSubmit;

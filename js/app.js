@@ -3,6 +3,7 @@ var _util = require('./util.js');
 var _dataSrv = require('./dataService.js');
 var _entity = require('./entries.js');
 var _validate = require('./validate.js');
+var _render = require('./render.js');
 
 var pagePayload = new _entity.PagePayload();
 
@@ -69,17 +70,25 @@ $.validator.addMethod("DateFormatCheck", function(value, element) {
   }, _config.errorMessages.dateformat);    
 
 
-
 // Form validation rule
 $(_config.uiControlIds.form).validate({
     rules: _validate.validationRules,    
     highlight: _validate.highlight,    
-    unhighlight: _validate.unhighlight, 
-    submitHandler: function() {        
-        $("table tbody").empty(); 
+    unhighlight: _validate.unhighlight,
+    submitHandler: function() {
+        _render.disableSubmit(true);
+        $(_config.uiControlIds.searchTable).empty();         
+        $(_config.uiControlIds.loader).html("Loading......");
         
-        //$('#searchResultHeader').style.display = none;       
-        _validate.formSubmit();
-    }       
+        $.when(_dataSrv.formSubmit()).done(function(data){
+            _render.EventAJAXCallSuccess(data);
+            
+        }).fail(function(xhr, status, error){
+            _render.EventAJAXCallFailed(xhr, status, error);
+        }).always(function(){
+            _render.disableSubmit(false);
+            $(_config.uiControlIds.loader).html("");
+        });
+    }         
 });
 

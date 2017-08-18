@@ -94,7 +94,7 @@
     /* position: relative; */
 }
 
-#searchResult{
+#searchTable{
     max-height: 550px;
     overflow-y: scroll;
 }
